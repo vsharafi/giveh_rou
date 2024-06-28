@@ -1,0 +1,615 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-12 01:31+0330\n"
+"PO-Revision-Date: 2024-06-12 01:32+0330\n"
+"Last-Translator: وحید شرفی <>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: .\cart.py:33
+msgid "Product quantity of cart has successfully updated "
+msgstr "تعداد محصول موجود در سبد خرید به روز رسانی شد."
+
+#: .\cart.py:36 .\cart.py:53
+msgid "Product successfully added to cart."
+msgstr "محصول با موفقیت به سبد خرید اضافه شد."
+
+#: .\cart.py:64
+msgid "Product successfully removed from cart."
+msgstr "محصول با موفقیت از سبد خرید حذف شد."
+
+#: .\cart.py:94
+msgid "All product successfully removed from cart."
+msgstr "تمام محصولات با موفقیت از سبد خرید حذف شدند."
+
+#: .\compare.py:24
+msgid "This product is already in the comparison list"
+msgstr "این محصول در لیست مقایسه وجود دارد."
+
+#: .\compare.py:27
+msgid "Product successfully added to comparison list."
+msgstr "محصول با موفقیت به لیست مقایسه اضافه شد."
+
+#: .\compare.py:29
+msgid "Your comparison list is full. Please remove an item to add this one."
+msgstr ""
+"لیست مقایسه پر شده است. لطفا برای اضافه کردن این محصول، محصول دیگری را حذف "
+"کنید."
+
+#: .\compare.py:38
+msgid "Product successfully removed from comparison list."
+msgstr "محصول با موفقیت از لیست مقایسه حذف شد."
+
+#: .\forms.py:31
+msgid "First Name*"
+msgstr "نام*"
+
+#: .\forms.py:32
+msgid "Last Name*"
+msgstr "نام خانوادگی*"
+
+#: .\forms.py:33
+msgid "Phone Number*"
+msgstr "شماره تلفن*"
+
+#: .\forms.py:34
+msgid "Full Address*"
+msgstr "آدرس کامل*"
+
+#: .\forms.py:35
+msgid "Order Note"
+msgstr "یادداشت سفارش"
+
+#: .\templates\orders\order_create.html:8
+#: .\templates\orders\order_create.html:15
+#: .\templates\orders\order_create.html:18
+msgid "Checkout"
+msgstr "پرداخت"
+
+#: .\templates\orders\order_create.html:17
+#: .\templates\products\cart_detail.html:18
+#: .\templates\products\category_list.html:14
+#: .\templates\products\compare_list.html:16 .\templates\products\home.html:9
+#: .\templates\products\product_detail.html:128
+#: .\templates\products\product_list.html:157
+msgid "Home"
+msgstr "خانه"
+
+#: .\templates\orders\order_create.html:33
+msgid "Billing Details"
+msgstr "جزئیات صورتحساب"
+
+#: .\templates\orders\order_create.html:38
+msgid "First Name"
+msgstr "نام"
+
+#: .\templates\orders\order_create.html:45
+msgid "Last Name"
+msgstr "نام خانوادگی"
+
+#: .\templates\orders\order_create.html:52
+msgid "Phone Number"
+msgstr "شماره تلفن"
+
+#: .\templates\orders\order_create.html:61
+msgid "Address"
+msgstr "آدرس"
+
+#: .\templates\orders\order_create.html:77
+msgid "Your Order"
+msgstr "سفارش شما"
+
+#: .\templates\orders\order_create.html:83
+msgid "Product Details"
+msgstr "مشخصات محصولات"
+
+#: .\templates\orders\order_create.html:84
+#: .\templates\products\cart_detail.html:40
+#: .\templates\products\cart_detail.html:124
+msgid "Total"
+msgstr "مجموع"
+
+#: .\templates\orders\order_create.html:96
+#: .\templates\orders\order_create.html:108
+#: .\templates\orders\order_create.html:118
+#: .\templates\orders\order_create.html:128
+#: .\templates\products\cart_detail.html:80
+#: .\templates\products\cart_detail.html:86
+#: .\templates\products\cart_detail.html:122
+#: .\templates\products\cart_detail.html:123
+#: .\templates\products\cart_detail.html:124
+#: .\templates\products\compare_list.html:50
+#: .\templates\products\compare_list.html:51
+#: .\templates\products\home.html:180 .\templates\products\home.html:262
+#: .\templates\products\home.html:307 .\templates\products\home.html:386
+#: .\templates\products\product_detail.html:441
+#: .\templates\products\product_detail.html:481
+#: .\templates\products\product_list.html:358
+#: .\templates\products\product_list.html:564
+msgid "$"
+msgstr "تومان"
+
+#: .\templates\orders\order_create.html:104
+#: .\templates\products\cart_detail.html:122
+msgid "Products total price"
+msgstr "قیمت کالاها"
+
+#: .\templates\orders\order_create.html:114
+#: .\templates\products\cart_detail.html:123
+msgid "Total Discount"
+msgstr "سود شما از خرید"
+
+#: .\templates\orders\order_create.html:124
+msgid "Order Total"
+msgstr "مبلغ قابل پرداخت"
+
+#: .\templates\orders\order_create.html:155
+msgid "Place Order"
+msgstr "ثبت سفارش"
+
+#: .\templates\products\cart_detail.html:8
+#: .\templates\products\cart_detail.html:16
+#: .\templates\products\cart_detail.html:19
+msgid "Cart"
+msgstr "سبد خرید"
+
+#: .\templates\products\cart_detail.html:35
+msgid "Product"
+msgstr "محصول"
+
+#: .\templates\products\cart_detail.html:36
+msgid "Name"
+msgstr "مشخصات محصول"
+
+#: .\templates\products\cart_detail.html:37
+msgid "Quantity"
+msgstr "تعداد"
+
+#: .\templates\products\cart_detail.html:38
+msgid "Update Quantity"
+msgstr "به روز رسانی تعداد"
+
+#: .\templates\products\cart_detail.html:39
+msgid "Unit Price"
+msgstr "قیمت واحد"
+
+#: .\templates\products\cart_detail.html:60 .\templates\products\home.html:325
+#: .\templates\products\home.html:404
+#: .\templates\products\product_detail.html:183
+#: .\templates\products\product_detail.html:265
+#: .\templates\products\product_detail.html:499
+#: .\templates\products\product_list.html:582
+msgid "Color:"
+msgstr "رنگ:"
+
+#: .\templates\products\cart_detail.html:61 .\templates\products\home.html:334
+#: .\templates\products\home.html:413
+#: .\templates\products\product_detail.html:202
+#: .\templates\products\product_detail.html:269
+#: .\templates\products\product_detail.html:508
+#: .\templates\products\product_list.html:591
+msgid "Size:"
+msgstr "سایز:"
+
+#: .\templates\products\cart_detail.html:82
+#: .\templates\products\cart_detail.html:88 .\templates\products\home.html:189
+#: .\templates\products\home.html:271
+#: .\templates\products\product_list.html:367
+msgid "OFF"
+msgstr "تخفیف"
+
+#: .\templates\products\cart_detail.html:98
+msgid "Your cart is empty. Please add some products to the cart"
+msgstr ""
+"سبد خرید شما خالی است. برای مشاهده محصولات بیشتر به صفحه فروشگاه بروید."
+
+#: .\templates\products\cart_detail.html:105
+msgid "Continue Shopping"
+msgstr "ادامه خرید"
+
+#: .\templates\products\cart_detail.html:110
+msgid "Empty Cart"
+msgstr "خالی کردن سبد خرید"
+
+#: .\templates\products\cart_detail.html:119
+msgid "Cart Totals"
+msgstr "جمع سبد خرید"
+
+#: .\templates\products\cart_detail.html:127
+msgid "Proceed to Checkout"
+msgstr "تکمیل سفارش"
+
+#: .\templates\products\category_list.html:6
+#: .\templates\products\category_list.html:12
+#: .\templates\products\category_list.html:15
+#: .\templates\products\home.html:37 .\templates\products\home.html:66
+msgid "Categories"
+msgstr "دسته بندی ها"
+
+#: .\templates\products\category_list.html:35
+#: .\templates\products\home.html:98 .\templates\products\home.html:111
+msgid "Discover Now"
+msgstr "انتخاب کن"
+
+#: .\templates\products\compare_list.html:7
+#: .\templates\products\compare_list.html:14
+msgid "Compare Products"
+msgstr "مقایسه محصولات"
+
+#: .\templates\products\compare_list.html:17
+#: .\templates\products\home.html:153 .\templates\products\home.html:234
+#: .\templates\products\product_detail.html:421
+#: .\templates\products\product_list.html:330
+msgid "Compare"
+msgstr "مقایسه"
+
+#: .\templates\products\compare_list.html:32
+msgid "Products"
+msgstr "محصولات"
+
+#: .\templates\products\compare_list.html:64
+msgid "Collection"
+msgstr "دسته بندی"
+
+#: .\templates\products\compare_list.html:72
+msgid "Availability"
+msgstr "موجودی"
+
+#: .\templates\products\compare_list.html:74
+#: .\templates\products\home.html:319 .\templates\products\home.html:398
+#: .\templates\products\product_detail.html:177
+#: .\templates\products\product_detail.html:493
+#: .\templates\products\product_list.html:576
+msgid "In stock"
+msgstr "در انبار"
+
+#: .\templates\products\compare_list.html:74
+#: .\templates\products\home.html:319 .\templates\products\home.html:398
+#: .\templates\products\product_detail.html:177
+#: .\templates\products\product_detail.html:493
+#: .\templates\products\product_list.html:576
+msgid "items"
+msgstr "عدد"
+
+#: .\templates\products\compare_list.html:80
+#: .\templates\products\product_list.html:233
+#: .\templates\products\product_list.html:510
+msgid "Color"
+msgstr "رنگ"
+
+#: .\templates\products\compare_list.html:87
+#: .\templates\products\product_list.html:218
+#: .\templates\products\product_list.html:495
+msgid "Size"
+msgstr "سایز"
+
+#: .\templates\products\compare_list.html:93
+#: .\templates\products\product_detail.html:273
+msgid "Shoe Upper:"
+msgstr "رویه کفش:"
+
+#: .\templates\products\compare_list.html:100
+#: .\templates\products\product_detail.html:277
+msgid "Shoe Soles:"
+msgstr "زیره کفش:"
+
+#: .\templates\products\compare_list.html:107
+#: .\templates\products\product_detail.html:281
+msgid "Insole:"
+msgstr "کفی کفش:"
+
+#: .\templates\products\compare_list.html:114
+#: .\templates\products\product_detail.html:285
+msgid "Shipping:"
+msgstr "ارسال محصول"
+
+#: .\templates\products\compare_list.html:116
+#: .\templates\products\product_detail.html:286
+msgid "Free"
+msgstr "رایگان"
+
+#: .\templates\products\compare_list.html:122
+msgid "Please add some products for comparison."
+msgstr "لطفا محصولی برای مقایسه اضافه کنید."
+
+#: .\templates\products\compare_list.html:123
+msgid "Return to Store"
+msgstr "بازگشت به فروشگاه"
+
+#: .\templates\products\home.html:32
+msgid "Limited Time Offer!"
+msgstr "پیشنهاد ویژه!"
+
+#: .\templates\products\home.html:33
+msgid "Winter-Spring!"
+msgstr "حراج بهاره"
+
+#: .\templates\products\home.html:34
+#, python-format
+msgid "Take 20%% Off ‘Sale Must-Haves'"
+msgstr "تا 20 درصد تخفیف ویژه"
+
+#: .\templates\products\home.html:36 .\templates\products\home.html:65
+msgid "All Products"
+msgstr "تمام محصولات"
+
+#: .\templates\products\home.html:61
+msgid "Exclusive Offer!"
+msgstr "پیشنهاد منحصر به فرد"
+
+#: .\templates\products\home.html:62
+msgid "Summer-Fashion!"
+msgstr "گیوه های راحت تابستانه"
+
+#: .\templates\products\home.html:63
+msgid "Leap year offer ‘Sale Must-Haves'"
+msgstr "پرفروش ترین گیوه ها \"مناسب پیاده روی\""
+
+#: .\templates\products\home.html:125 .\templates\products\home.html:206
+msgid "See Our Collection"
+msgstr "از محصولات ما دیدن کنید"
+
+#: .\templates\products\home.html:126
+msgid "Recent Products"
+msgstr "جدیدترین محصولات"
+
+#: .\templates\products\home.html:145 .\templates\products\home.html:226
+#: .\templates\products\product_detail.html:229
+#: .\templates\products\product_detail.html:413
+#: .\templates\products\product_list.html:322
+msgid "Add to Wishlist"
+msgstr "اضافه به علاقه مندی"
+
+#: .\templates\products\home.html:161 .\templates\products\home.html:242
+#: .\templates\products\product_detail.html:429
+#: .\templates\products\product_list.html:338
+msgid "Quick View"
+msgstr "مشاهده سریع"
+
+#: .\templates\products\home.html:168
+msgid "New!"
+msgstr "جدید!"
+
+#: .\templates\products\home.html:207
+msgid "Popular Products"
+msgstr "محبوب ترین محصولات"
+
+#: .\templates\products\home.html:315 .\templates\products\home.html:394
+#: .\templates\products\product_detail.html:173
+#: .\templates\products\product_detail.html:489
+#: .\templates\products\product_list.html:572
+msgid "reviews"
+msgstr "دیدگاه ها"
+
+#: .\templates\products\home.html:319 .\templates\products\home.html:398
+#: .\templates\products\product_detail.html:177
+#: .\templates\products\product_detail.html:493
+#: .\templates\products\product_list.html:576
+msgid "Availability:"
+msgstr "موجودی:"
+
+#: .\templates\products\home.html:320 .\templates\products\home.html:399
+#: .\templates\products\product_detail.html:178
+#: .\templates\products\product_detail.html:494
+#: .\templates\products\product_list.html:577
+msgid "Products Type:"
+msgstr "نوع محصول:"
+
+#: .\templates\products\home.html:350 .\templates\products\home.html:429
+#: .\templates\products\product_detail.html:223
+#: .\templates\products\product_detail.html:524
+#: .\templates\products\product_list.html:607
+msgid "Add to Cart"
+msgstr "اضافه به سبد خرید"
+
+#: .\templates\products\home.html:354 .\templates\products\home.html:433
+#: .\templates\products\product_detail.html:528
+#: .\templates\products\product_list.html:611
+msgid "View Full Info"
+msgstr "مشاهده اطلاعات کامل"
+
+#: .\templates\products\product_detail.html:129
+msgid "Products Details"
+msgstr "جزئیات محصول"
+
+#: .\templates\products\product_detail.html:212
+msgid "Size guide"
+msgstr "راهنمای سایز"
+
+#: .\templates\products\product_detail.html:213
+msgid "Shipping"
+msgstr "ارسال محصول"
+
+#: .\templates\products\product_detail.html:230
+msgid "Add to Compare"
+msgstr "مقایسه کالا"
+
+#: .\templates\products\product_detail.html:240
+msgid "Description"
+msgstr "معرفی"
+
+#: .\templates\products\product_detail.html:244
+msgid "Additional Information"
+msgstr "اطلاعات تکمیلی"
+
+#: .\templates\products\product_detail.html:248
+msgid "Reviews"
+msgstr "دیدگاه ها"
+
+#: .\templates\products\product_detail.html:297
+msgid "Customer Reviews"
+msgstr "دیدگاه مشتریان"
+
+#: .\templates\products\product_detail.html:304
+msgid "Based on"
+msgstr "بر اساس"
+
+#: .\templates\products\product_detail.html:304
+msgid "review"
+msgstr "دیدگاه"
+
+#: .\templates\products\product_detail.html:305
+#: .\templates\products\product_detail.html:328
+msgid "Write a Review"
+msgstr "ثبت دیدگاه"
+
+#: .\templates\products\product_detail.html:316
+msgid " on "
+msgstr "در تاریخ"
+
+#: .\templates\products\product_detail.html:330
+msgid "Overall rating"
+msgstr "امتیاز کلی"
+
+#: .\templates\products\product_detail.html:359
+msgid "Title of your review"
+msgstr "عنوان دیدگاه"
+
+#: .\templates\products\product_detail.html:360
+msgid "If you could say it in one sentence, what would you say?"
+msgstr "در یک جمله دیدگاه خودت رو بگو"
+
+#: .\templates\products\product_detail.html:366
+msgid "Your review"
+msgstr "متن دیدگاه"
+
+#: .\templates\products\product_detail.html:367
+msgid "Write your review to help others learn about this online business"
+msgstr "با بیان دیدگاه خود به دیگران در مورد این کسب و کار بیاموزید"
+
+#: .\templates\products\product_detail.html:372
+msgid "Submit Review"
+msgstr "ثبت دیدگاه"
+
+#: .\templates\products\product_detail.html:378
+msgid "if you want to write your comment."
+msgstr "برای ثبت دیدگاه خود"
+
+#: .\templates\products\product_detail.html:380
+msgid "Log in"
+msgstr "وارد شوید"
+
+#: .\templates\products\product_detail.html:394
+msgid "Our Shop"
+msgstr "فروشگاه ما"
+
+#: .\templates\products\product_detail.html:395
+msgid "Related Products"
+msgstr "محصولات مرتبط"
+
+#: .\templates\products\product_list.html:13
+#: .\templates\products\product_list.html:155
+#: .\templates\products\product_list.html:158
+msgid "Shop"
+msgstr "فروشگاه"
+
+#: .\templates\products\product_list.html:174
+#: .\templates\products\product_list.html:471
+msgid "Collections"
+msgstr "دسته بندی ها"
+
+#: .\templates\products\product_list.html:190
+#: .\templates\products\product_list.html:487
+msgid "Price"
+msgstr "قیمت"
+
+#: .\templates\products\product_list.html:197
+msgid "Min"
+msgstr "کمترین"
+
+#: .\templates\products\product_list.html:202
+msgid "Max"
+msgstr "بیشترین"
+
+#: .\templates\products\product_list.html:249
+#: .\templates\products\product_list.html:527
+msgid "Reset"
+msgstr "بازنشانی"
+
+#: .\templates\products\product_list.html:250
+#: .\templates\products\product_list.html:528
+msgid "Filter"
+msgstr "فیلتر کردن"
+
+#: .\templates\products\product_list.html:260
+msgid " Filter"
+msgstr "فیلترها"
+
+#: .\templates\products\product_list.html:262
+msgid "View:"
+msgstr "نمایش:"
+
+#: .\templates\products\product_list.html:296
+#: .\templates\products\product_list.html:463
+msgid "Sort by average rating"
+msgstr "امتیاز"
+
+#: .\templates\products\product_list.html:297
+#: .\templates\products\product_list.html:464
+msgid "Sort by newness"
+msgstr "جدید ترین"
+
+#: .\templates\products\product_list.html:298
+#: .\templates\products\product_list.html:465
+msgid "Sort by price: low to high"
+msgstr "ارزان ترین"
+
+#: .\templates\products\product_list.html:299
+#: .\templates\products\product_list.html:466
+msgid "Sort by price: high to low"
+msgstr "گران ترین"
+
+#: .\templates\products\product_list.html:460
+msgid "Sort By:"
+msgstr "مرتب سازی بر اساس"
+
+#: .\views.py:227
+msgid "Your cart is already empty"
+msgstr "سبد خرید شما خالی می باشد."
+
+#: .\views.py:234
+msgid "Your cart is empty. Please add some product to your cart."
+msgstr "سبد خرید شما خالی است. برای ادامه محصولی به سبد خرید اضافه کنید."
+
+#: .\views.py:291
+msgid "Your order has successfully placed."
+msgstr "سفارش شما با موفقیت ثبت شد."
+
+#: .\views.py:297
+msgid "Please login first for adding products to your wishlist."
+msgstr ""
+"لطفا برای اضافه کردن کالا به لیست علاقه مندی ها وارد حساب کاربری خود شوید."
+
+#: .\views.py:305
+msgid "This product is already in your wishlist"
+msgstr "این محصول در موارد دلخواه وجود دارد."
+
+#: .\views.py:307
+msgid "Product has added to wishlist successfully"
+msgstr "محصول با موفقیت به موارد دلخواه اضافه شد."
+
+#: .\views.py:318
+msgid "Product has removed from wishlist successfully."
+msgstr "محصول با موفقیت از موارد دلخواه حذف شد."
+
+#~ msgid "birth_date"
+#~ msgstr "تاریخ تولد"
+
+#~ msgid "Subtotal"
+#~ msgstr "قیمت کالاها"
+
+#~ msgid "Login"
+#~ msgstr "وارد شوید"

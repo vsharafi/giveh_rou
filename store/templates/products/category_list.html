@@ -1,0 +1,46 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load cat_filter %}
+
+{% block page_title %}{% trans "Categories" %}{% endblock page_title %}
+{% block content %}
+<!-- Start Page Title -->
+<div class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>{% trans "Categories" %}</h2>
+            <ul>
+                <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                <li>{% trans "Categories" %}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Start Categories Banner Area -->
+<section class="categories-banner-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            {% for category in categories %}
+
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="single-categories-box">
+                    <img src="{{category.picture.url}}" alt="image">
+
+                    <div class="content">
+                        <span>{{category.description}}</span>
+                        <h3>{{category.name}}</h3>
+                        <a href="#" class="default-btn">{% trans "Discover Now" %}</a>
+                    </div>
+                    <a href="{% url "category_product_list" category %}" class="link-btn"></a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- End Categories Banner Area -->
+
+{% endblock content %}

@@ -1,0 +1,623 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load jalali_tags %}
+{% load humanize %}
+{% load persian_translation_tags %}
+
+<!-- SPECIFIC CSS -->
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/custom_style.css" %}">
+{% endblock css %}
+{% block page_title %}{{product.name}}{% endblock page_title %}{{product.name}}
+{% block content %}
+<style>
+
+
+
+    input[type="radio"] {
+        display: none;
+    }
+    input[type="radio"]:checked + label span {
+        transform: scale(1.25);
+    }
+    
+    {% for color in colors %}
+    input[type="radio"]:checked + label .{{color.name}} {
+        border: 2px solid {{color}};
+    }
+    label span.{{color.name}} {
+        background: {{color}};
+    }
+    {% endfor %}
+    
+    .color {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+    .color:hover span {
+        transform: scale(1.25);
+    }
+    label span {
+        display: block;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.2s ease-in-out;
+    }
+
+
+
+    h1 {
+        font-size: 24px;
+        margin: 0;
+    }
+     
+    .rating {
+        font-size: 20px;
+        margin: 10px 0;
+    }
+     
+    .stars {
+        font-size: 30px;
+        margin: 10px 0;
+    }
+     
+    .star {
+        cursor: pointer;
+        margin: 0 5px;
+    }
+     
+    .one {
+        color: rgb(255, 0, 0);
+    }
+     
+    .two {
+        color: rgb(255, 106, 0);
+    }
+     
+    .three {
+        color: rgb(251, 255, 120);
+    }
+     
+    .four {
+        color: rgb(255, 255, 0);
+    }
+     
+    .five {
+        color: rgb(24, 159, 14);
+    }
+     
+    textarea {
+        width: 90%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+     
+    .reviews {
+        margin-top: 20px;
+        text-align: left;
+    }
+     
+    .review {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+     
+    .review p {
+        margin: 0;
+    }
+
+
+</style>
+
+
+
+
+<!-- Start Page Title -->
+<div class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>{{product.name}}</h2>
+            <ul>
+                <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                <li>{% trans "Products Details" %}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Start Product Details Area -->
+<section class="product-details-area pt-100 pb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-12">
+                <div class="products-details-image">
+                    <ul class="products-details-image-slides">
+                        {% for image in product.images.all %}
+                            <li><img src="{{image}}" alt="image"></li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="slick-thumbs">
+                        <ul>
+                            {% for image in product.images.all %}
+                            <li><img src="{{image}}" alt="image"></li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 col-md-12">
+                <div class="products-details-desc">
+                    <h3>{{product.name}}</h3>
+
+                    <div class="price">
+                        <span class="new-price">{% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %}</span>
+                        <span class="old-price">{% if product.discount %}{{product.price|intcomma:False|trans_number}}{% endif %}</span>
+                    </div>
+
+                    <div class="products-review">
+                        <div class="rating">
+                            <i class='bx bx-star'></i>
+                            {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                        </div>
+                        <a href="#" class="rating-count">{{product.reviews|trans_number}} {% trans "reviews" %}</a>
+                    </div>
+
+                    <ul class="products-info">
+                        <li><span>{% trans "Availability:" %}</span> <a href="#">{% trans "In stock" %} ({{product.inventory|trans_number}} {% trans "items" %})</a></li>
+                        <li><span>{% trans "Products Type:" %}</span> <a href="{% url "category_product_list" product.category %}">{{product.category}}</a></li>
+                    </ul>
+                    <form action="{% url "cart_add" product.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="products-color-switch">
+                            <span>{% trans "Color:" %}</span>
+                            <div class="color-picker">
+                                {% for color in product.available_colors.all %}
+                                <input type="radio" name="color" id="{{color.name}}" value="{{color.name}}" required/>
+                                <label for="{{color.name}}"><span class="color {{color.name}}"></span></label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if cart_form.errors %}
+                            {% for field in form %}
+
+                                {% for error in field.errors %}
+                                        {{field.label}}: {{ error|escape }}
+                                {% endfor %}
+
+                            {% endfor %}
+                        {% endif %}
+
+                        <div class="products-size-wrapper">
+                            <span>{% trans "Size:" %}</span>
+
+                            <select style="width: 40%;" id="size" name="size" class="wide">
+                                {% for size in product.sizes.all %}
+                                    <option name='size' value="{{size}}">{{size|trans_number}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="products-info-btn">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#sizeGuideModal"><i class='bx bx-crop'></i> {% trans "Size guide" %}</a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#productsShippingModal"><i class='bx bxs-truck' ></i> {% trans "Shipping" %}</a>
+                        </div>
+
+                        <div class="products-add-to-cart">
+                            <div class="input-counter">
+                                <span class="minus-btn"><i class='bx bx-minus'></i></span>
+                                <input id="quantity" name="quantity" type="text" value="1">
+                                <span class="plus-btn"><i class='bx bx-plus'></i></span>
+                            </div>
+
+                            <button type="submit" class="default-btn"><i class="fas fa-cart-plus"></i> {% trans "Add to Cart" %}</button>
+                        </div>
+                    </form>
+
+
+                    <div class="wishlist-compare-btn">
+                        <a href="{% url "wishlist_add" product.pk %}" class="optional-btn"><i class='bx bx-heart'></i> {% trans "Add to Wishlist" %}</a>
+                        <a href="{% url "compare_add" product.pk %}" class="optional-btn"><i class='bx bx-refresh'></i> {% trans "Add to Compare" %}</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tab products-details-tab">
+            <ul class="tabs">
+                <li><a href="#">
+                    <div class="dot"></div> {% trans "Description" %}
+                </a></li>
+                
+                <li><a href="#">
+                    <div class="dot"></div> {% trans "Additional Information" %}
+                </a></li>
+
+                <li><a href="#">
+                    <div class="dot"></div> {% trans "Reviews" %}
+                </a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tabs-item">
+                    <div class="products-details-tab-content">
+                        <p>{{product.description}}</p>
+                    </div>
+                </div>
+
+                <div class="tabs-item">
+                    <div class="products-details-tab-content">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>{% trans 'Color:' %}</td>
+                                        <td>{{product.all_colors}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans 'Size:' %}</td>
+                                        <td>{{product.all_sizes|trans_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans 'Shoe Upper:' %}</td>
+                                        <td>{{product.shoe_upper}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans 'Shoe Soles:' %}</td>
+                                        <td>{{product.shoe_soles}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans 'Insole:' %}</td>
+                                        <td>{{product.insole}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Shipping:" %}</td>
+                                        <td>{% trans "Free" %}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tabs-item">
+                    <div class="products-details-tab-content">
+                        <div class="products-review-form">
+                            <h3>{% trans "Customer Reviews" %}</h3>
+
+                            <div class="review-title">
+                                <div class="rating">
+                                    <i class='bx bxs-star'></i>
+                                    <p>{{product.rating|trans_number}}</p>
+                                </div>
+                                <p>{% trans "Based on" %} {{product.reviews|trans_number}} {% trans "review" %}</p>
+                                <a href="#" class="default-btn">{% trans "Write a Review" %}</a>
+                            </div>
+
+                            <div class="review-comments">
+                                {% for comment in product.comments.all %}
+                                <div class="review-item">
+                                    <div class="rating">
+                                        <i class='bx bxs-star'></i>
+                                        <small>{{comment.stars|trans_number}}</small>
+                                    </div>
+                                    <h3>{{comment.title}}</h3>
+                                    <span><strong>{{comment.author}}</strong> {% trans " on " %} <strong>{{comment.datetime_created|to_jalali:'%d %B %Y'|trans_number}}</strong></span>
+                                    <p>{{comment.text}}</p>
+                                </div>
+                                {% endfor %}
+                                <hr>
+
+                            </div>
+
+                            <div class="review-form">
+                            {% if user.is_authenticated %}
+                            <form action="{% url 'comment_create' slug=product.slug %}" method="POST">
+                                {% csrf_token %}
+                                <h3>{% trans "Write a Review" %}</h3>
+                                <div>
+                                    <label>{% trans "Overall rating" %}</label>
+                                    <div class="rating">
+                                        <span id="rating">0</span>/5
+                                    </div>
+                                    <div class="stars" id="stars">
+                                        <label for="1_star">
+                                            <input type="radio" class="rating-input" id="1_star" name="stars" value="1"><span class="star" data-value="1">★</span>
+                                        </label>
+                                        <label for="2_star">
+                                            <input type="radio" class="rating-input" id="2_star" name="stars" value="2"><span class="star" data-value="2">★</span>
+                                        </label>
+                                        <label for="3_star">
+                                            <input type="radio" class="rating-input" id="3_star" name="stars" value="3"><span class="star" data-value="3">★</span>
+                                        </label>
+                                        <label for="4_star">
+                                            <input type="radio" class="rating-input" id="4_star" name="stars" value="4"><span class="star" data-value="4">★</span>
+                                        </label>
+                                        <label for="5_star">
+                                            <input type="radio" class="rating-input" id="5_star" name="stars" value="5"><span class="star" data-value="5">★</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>{% trans "Title of your review" %}</label>
+                                            <input class="form-control" type="text" name='title' placeholder="{% trans "If you could say it in one sentence, what would you say?" %}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="form-group">
+                                            <label>{% trans "Your review" %}</label>
+                                            <textarea class="form-control" name='text' style="height: 180px;" placeholder="{% trans "Write your review to help others learn about this online business" %}"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12">
+                                        <button id="submit" type="submit" class="default-btn">{% trans "Submit Review" %}</button>
+                                    </div>
+                                </div>
+                            </form>
+                            {% else %}
+                                <p>
+                                    {% trans "if you want to write your comment." %}
+                                </p>
+                                <a href="{% url 'account_login' %}?next={{ request.get_full_path|urlencode }}" class="default-btn">{% trans "Log in" %}</a>
+
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="related-products">
+        <div class="container">
+            <div class="section-title">
+                <span class="sub-title">{% trans "Our Shop" %}</span>
+                <h2>{% trans "Related Products" %}</h2>
+            </div>
+
+            <div class="products-slides owl-carousel owl-theme">
+                {% for product in related_products %}
+                <div class="single-products-box">
+                    <div class="products-image">
+                        <a href="{{product.get_absolute_url}}">
+                            <img src="{{product.images.first}}" class="main-image" alt="image">
+                            <img src="{{product.images.last}}" class="hover-image" alt="image">
+                        </a>
+
+                        <div class="products-button">
+                            <ul>
+                                <li>
+                                    <div class="wishlist-btn">
+                                        <a href="#">
+                                            <i class='bx bx-heart'></i>
+                                            <span class="tooltip-label">{% trans "Add to Wishlist" %}</span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="compare-btn">
+                                        <a href="{% url "compare_add" product.pk %}">
+                                            <i class='bx bx-refresh'></i>
+                                            <span class="tooltip-label">{% trans "Compare" %}</span>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="quick-view-btn">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productsQuickView-{{forloop.counter}}">
+                                            <i class='bx bx-search-alt'></i>
+                                            <span class="tooltip-label">{% trans "Quick View" %}</span>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="products-content">
+                        <h3><a href="{% url "product_detail" product.pk %}">{{product.name}}</a></h3>
+                        <div class="price">
+                            <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                            <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                        </div>
+                        <div class="star-rating">
+                            <i class='bx bxs-star'></i>
+                            {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                        </div>
+                        {% comment %} <a href="#" class="add-to-cart">Add to Cart</a> {% endcomment %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Product Details Area -->
+
+
+<!-- Start QuickView Modal Area -->
+{% for product in related_products %}
+<div class="modal fade productsQuickView" id="productsQuickView-{{forloop.counter}}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"><i class='bx bx-x'></i></span>
+          </button>
+
+          <div class="row align-items-center">
+              <div class="col-lg-6 col-md-6">
+                  <div class="products-image">
+                      <img src="{{product.images.all.first}}" alt="image">
+                  </div>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                  <div class="products-content">
+                      <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+
+                      <div class="price">
+                          <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                          <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                      </div>
+
+                      <div class="products-review">
+                          <div class="rating">
+                              <i class='bx bxs-star'></i>
+                              {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                          </div>
+                          <a href="#" class="rating-count">{{product.reviews|trans_number}} {% trans "reviews" %}</a>
+                      </div>
+
+                      <ul class="products-info">
+                        <li><span>{% trans "Availability:" %}</span> <a href="#">{% trans "In stock" %} ({{product.inventory|trans_number}} {% trans "items" %})</a></li>
+                        <li><span>{% trans "Products Type:" %}</span> <a href="{% url "category_product_list" product.category %}">{{product.category}}</a></li>
+                      </ul>
+                      <form action="{% url "cart_add" product.pk %}" method="POST">
+                          {% csrf_token %}
+                        <div class="products-color-switch">
+                            <h4>{% trans "Color:" %}</h4>
+                            <select style="width: 40%;" id="color" name="color" class="wide">
+                              {% for color in product.available_colors.all %}
+                                  <option name='color' value="{{color}}">{{color|trans_color}}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+
+                        <div class="products-size-wrapper">
+                          <span>{% trans "Size:" %}</span>
+
+                          <select style="width: 40%;" id="size" name="size" class="wide">
+                              {% for size in product.sizes.all %}
+                                  <option name='size' value="{{size}}">{{size|trans_number}}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+
+                        <div class="products-add-to-cart">
+                            <div class="input-counter">
+                                <span class="minus-btn"><i class='bx bx-minus'></i></span>
+                                <input id="quantity" name="quantity" type="text" value="1">
+                                <span class="plus-btn"><i class='bx bx-plus'></i></span>
+                            </div>
+
+                            <button type="submit" class="default-btn">{% trans "Add to Cart" %}</button>
+                        </div>
+                      </form>
+
+                      <a href="{{product.get_absolute_url}}" class="view-full-info">{% trans "View Full Info" %}</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endfor %}
+<!-- End QuickView Modal Area -->
+
+
+
+<script>
+    const stars = document.querySelectorAll(".star");
+const rating = document.getElementById("rating");
+const reviewText = document.getElementById("review");
+const submitBtn = document.getElementById("submit");
+const reviewsContainer = document.getElementById("reviews");
+
+stars.forEach((star) => {
+	star.addEventListener("click", () => {
+		const value = parseInt(star.getAttribute("data-value"));
+		rating.innerText = value;
+
+		// Remove all existing classes from stars
+		stars.forEach((s) => s.classList.remove("one", 
+												"two", 
+												"three", 
+												"four", 
+												"five"));
+
+		// Add the appropriate class to 
+		// each star based on the selected star's value
+		stars.forEach((s, index) => {
+			if (index < value) {
+				s.classList.add(getStarColorClass(value));
+			}
+		});
+
+		// Remove "selected" class from all stars
+		stars.forEach((s) => s.classList.remove("selected"));
+		// Add "selected" class to the clicked star
+		star.classList.add("selected");
+	});
+});
+
+submitBtn.addEventListener("click", () => {
+	const review = reviewText.value;
+	const userRating = parseInt(rating.innerText);
+
+	if (!userRating || !review) {
+		alert(
+"Please select a rating and provide a review before submitting."
+			);
+		return;
+	}
+
+	if (userRating > 0) {
+		const reviewElement = document.createElement("div");
+		reviewElement.classList.add("review");
+		reviewElement.innerHTML = 
+`<p><strong>Rating: ${userRating}/5</strong></p><p>${review}</p>`;
+		reviewsContainer.appendChild(reviewElement);
+
+		// Reset styles after submitting
+		reviewText.value = "";
+		rating.innerText = "0";
+		stars.forEach((s) => s.classList.remove("one", 
+												"two", 
+												"three", 
+												"four", 
+												"five", 
+												"selected"));
+	}
+});
+
+function getStarColorClass(value) {
+	switch (value) {
+		case 1:
+			return "one";
+		case 2:
+			return "two";
+		case 3:
+			return "three";
+		case 4:
+			return "four";
+		case 5:
+			return "five";
+		default:
+			return "";
+	}
+}
+
+</script>
+{% endblock content %}
+{% block js %}
+{% endblock js %}

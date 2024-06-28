@@ -1,0 +1,40 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load socialaccount %}
+{% load persian_translation_tags %}
+
+
+
+{% block page_title %}{% trans "giveh rou" %}{% endblock page_title %}
+
+
+{% block content %}
+            <!-- Start Page Title -->
+            <div class="page-title-area">
+                <div class="container">
+                    <div class="page-title-content">
+                        <h2>{% trans "Not Found" %} {{404|trans_number}}</h2>
+                        <ul>
+                            <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                            <li>{% trans " Not Found" %} {{404|trans_number}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- End Page Title -->
+    
+            <!-- Start Error Area -->
+            <section class="error-area ptb-100">
+                <div class="container">
+                    <div class="error-content">
+                        <img src="{% static "assets/img/404.png" %}" alt="">
+                        <h3>{% trans "Page Not Found" %}</h3>
+                        <p>{% trans "The page you are looking for might have been removed had its name changed or is temporarily unavailable." %}</p>
+                        <a href="{% url "home" %}" class="default-btn">{% trans "Go to Home" %}</a>
+                    </div>
+                </div>
+            </section>
+            <!-- End Error Area -->
+{% endblock content %}

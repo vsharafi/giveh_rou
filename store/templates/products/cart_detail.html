@@ -1,0 +1,133 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load persian_translation_tags %}
+
+
+{% block page_title %}{% trans "Cart" %}{% endblock page_title %}
+
+
+{% block content %}
+<!-- Start Page Title -->
+<div class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>{% trans "Cart" %}</h2>
+            <ul>
+                <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                <li>{% trans "Cart" %}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Start Cart Area -->
+<section class="cart-area ptb-100">
+    <div class="container">
+
+            <div class="cart-table table-responsive">
+                {% if cart %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">{% trans "Product" %}</th>
+                            <th scope="col">{% trans "Name" %}</th>
+                            <th scope="col">{% trans "Quantity" %}</th>
+                            <th scope="col">{% trans "Update Quantity" %}</th>
+                            <th scope="col">{% trans "Unit Price" %}</th>
+                            <th scope="col">{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in cart %}
+                        <form action="{% url "cart_add" item.product_obj.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" value="{{item.size}}" name="size" hidden>
+                            <input type="text" value="{{item.color}}" name="color" hidden>
+                            <tr>
+                                <td class="product-thumbnail">
+                                    <a href="{{item.product_obj.get_absolute_url}}">
+                                        <img src="{{item.product_obj.images.first}}" alt="item">
+                                    </a>
+                                </td>
+
+                                <td class="product-name">
+                                    <a href="{{item.product_obj.get_absolute_url}}">{{item.product_obj}}</a>
+                                    <ul>
+                                        <li>{% trans "Color:" %} <span>{{item.color|trans_color}}</span></li>
+                                        <li>{% trans "Size:" %} <span>{{item.size|trans_number}}</span></li>
+                                    </ul>
+                                </td>
+
+                                
+                                <td class="product-quantity">
+                                    <div class="input-counter">
+                                        <span class="minus-btn"><i class='bx bx-minus'></i></span>
+                                        <input type="text" min="1" name="quantity" value="{{item.quantity}}">
+                                        <span class="plus-btn"><i class='bx bx-plus'></i></span>
+                                    </div>
+                                </td>
+                                <td class="product-price">
+                                    {{item.product_update_quantity_form.inplace}}
+                                    <button style="color:blue; background-color: transparent; border:none;" type="submit"><i class="bx bx-refresh"></i></button>
+                                </td>
+                                
+                                <td class="product-price">
+                                    <div class="price">
+                                        <span class="unit-amount">{{item.product_obj.price|intcomma:False|trans_number}} {% trans "$" %}</span>
+                                        <br>
+                                        <small class="new-price">{{item.product_obj.discount_amount|intcomma:False|trans_number}} {% trans "OFF" %}</small>
+                                    </dive>
+                                </td>
+                                <td class="product-subtotal">
+                                    <span class="subtotal-amount">{{item.total_price|intcomma:False|trans_number}} {% trans "$" %}</span>
+                                    <br>
+                                    <small class="new-price">{{item.total_discount|intcomma:False|trans_number}} {% trans "OFF" %}</small>
+
+                                    <a href="{% url 'cart_remove' item.cart_item %}" class="remove"><i class='bx bx-trash'></i></a>
+                                </td>
+                            </tr>
+                        </form>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>{% trans "Your cart is empty. Please add some products to the cart" %}</p>
+                {% endif %}
+            </div>
+
+            <div class="cart-buttons">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 col-sm-7 col-md-7">
+                        <a href="{% url "product_list" %}" class="optional-btn">{% trans "Continue Shopping" %}</a>
+                    </div>
+                    <div class="col-lg-5 col-sm-5 col-md-5 text-end">
+                        <form action="{% url 'cart_clear' %}" method="POST">
+                            {% csrf_token %}
+                            <button class="default-btn" type="submit">{% trans "Empty Cart" %}</button>
+                        <form/>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="cart-totals">
+                <h3>{% trans "Cart Totals" %}</h3>
+
+                <ul>
+                    <li>{% trans "Products total price" %} <span>{{cart.get_total_price|intcomma:False|trans_number}} {% trans "$" %}</span></li>
+                    <li>{% trans "Total Discount" %} <span>{{cart.total_discout_amount|intcomma:False|trans_number}} {% trans "$" %}</span></li>
+                    <li>{% trans "Total" %} <span>{{cart.get_new_total_price|intcomma:False|trans_number}} {% trans "$" %}</span></li>
+                </ul>
+                
+                <a href="{% url "order_create" %}" class="default-btn">{% trans "Proceed to Checkout" %}</a>
+            </div>
+
+    </div>
+</section>
+<!-- End Cart Area -->
+{% endblock content %}

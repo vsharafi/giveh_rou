@@ -1,0 +1,443 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load cat_filter %}
+{% load persian_translation_tags %}
+{% load static %}
+
+{% block page_title %}{% trans "Home" %}{% endblock page_title %}
+{% block content %}
+
+<style>
+    .hero-banner1 {
+        background-color: #e1e1e1;
+      }
+
+    .hero-banner2 {
+        background-color: #f2f2f2;
+      }
+      
+</style>
+
+<!-- Start Main Banner Area -->'
+<div class="home-slides-three owl-carousel owl-theme">
+        <div class="hero-banner1">
+                <div class="d-table">
+                <div class="d-table-cell">
+                        <div class="container">
+                        <div class="row align-items-center">
+                                <div class="col-lg-6">
+                                <div class="main-banner-content">
+                                        <span class="sub-title">{% trans "Limited Time Offer!" %}</span>
+                                        <h1>{% trans "Winter-Spring!" %}</h1>
+                                        <p>{% trans "Take 20% Off ‘Sale Must-Haves'" %}</p>
+                                        <div class="btn-box">
+                                        <a href="{% url "product_list" %}" class="default-btn">{% trans "All Products" %}</a>
+                                        <a href="{% url "category_list" %}" class="optional-btn">{% trans "Categories" %}</a>
+                                        </div>
+                                </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                <div class="banner-image">
+                                        <div class="circle"></div>
+                                        <img src="{% static 'assets\img\Instagram(37)-cat2.jpg' %}" alt="image">
+                                </div>
+                                </div>
+                        </div>
+                        </div>
+                </div>
+                </div>
+        </div>
+
+        <div class="hero-banner2">
+                <div class="d-table">
+                <div class="d-table-cell">
+                        <div class="container">
+                        <div class="row align-items-center">
+                                <div class="col-lg-6">
+                                <div class="main-banner-content">
+                                        <span class="sub-title">{% trans "Exclusive Offer!" %}</span>
+                                        <h1>{% trans "Summer-Fashion!" %}</h1>
+                                        <p>{% trans "Leap year offer ‘Sale Must-Haves'" %}</p>
+                                        <div class="btn-box">
+                                            <a href="{% url "product_list" %}" class="default-btn">{% trans "All Products" %}</a>
+                                            <a href="{% url "category_list" %}" class="optional-btn">{% trans "Categories" %}</a>
+                                        </div>
+                                </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                <div class="banner-image">
+                                        <div class="circle"></div>
+                                        <img src="{% static 'assets\img\Instagram(39)-cat2.jpg' %}" alt="image">
+                                </div>
+                                </div>
+                        </div>
+                        </div>
+                </div>
+                </div>
+        </div>
+</div>
+<!-- End Main Banner Area -->
+
+<!-- Start Categories Banner Area -->
+<section class="categories-banner-area pt-100 pb-70">
+        <div class="container">
+                <div class="row">
+                
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="single-categories-box">
+                        <img src="{{categories.first.picture.url}}" alt="image">
+
+                        <div class="content">
+                                {% comment %} <span>Don’t Miss Today</span> {% endcomment %}
+                                <h3>{{categories.first.name}}</h3>
+                                <a href="{% url "category_product_list" categories.first %}" class="default-btn">{% trans "Discover Now" %}</a>
+                        </div>
+                        <a href="{% url "category_product_list" categories.first %}" class="link-btn"></a>
+                        </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="single-categories-box">
+                    <img src="{{categories.last.picture.url}}" alt="image">
+
+                    <div class="content">
+                            {% comment %} <span>Don’t Miss Today</span> {% endcomment %}
+                            <h3>{{categories.last.name}}</h3>
+                            <a href="{% url "category_product_list" categories.last %}" class="default-btn">{% trans "Discover Now" %}</a>
+                    </div>
+                    <a href="{% url "category_product_list" categories.last %}" class="link-btn"></a>
+                    </div>
+            </div>
+                </div>
+        </div>
+</section>
+<!-- End Categories Banner Area -->
+
+<!-- Start Products Area -->
+<section class="products-area pb-70">
+        <div class="container">
+                <div class="section-title">
+                <span class="sub-title">{% trans 'See Our Collection' %}</span>
+                <h2>{% trans "Recent Products" %}</h2>
+                </div>
+
+                <div class="row">
+                        {% for product in newest_products %}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-productsBox">
+                                <div class="products-image">
+                                        <a href="{{product.get_absolute_url}}">
+                                        <img src="{{product.images.first}}" class="main-image" alt="image">
+                                        <img src="{{product.images.last}}" class="hover-image" alt="image">
+                                        </a>
+
+                                        <div class="products-button">
+                                        <ul>
+                                                <li>
+                                                <div class="wishlist-btn">
+                                                        <a href="{% url "wishlist_add" product.pk %}">
+                                                        <i class='bx bx-heart'></i>
+                                                        <span class="tooltip-label">{% trans 'Add to Wishlist' %}</span>
+                                                        </a>
+                                                </div>
+                                                </li>
+                                                <li>
+                                                <div class="compare-btn">
+                                                        <a href="{% url "compare_add" product.pk %}">
+                                                        <i class='bx bx-refresh'></i>
+                                                        <span class="tooltip-label">{% trans "Compare" %}</span>
+                                                        </a>
+                                                </div>
+                                                </li>
+                                                <li>
+                                                <div class="quick-view-btn">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productsQuickViewNewest-{{forloop.counter}}">
+                                                        <i class='bx bx-search-alt'></i>
+                                                        <span class="tooltip-label">{% trans 'Quick View' %}</span>
+                                                        </a>
+                                                </div>
+                                                </li>
+                                        </ul>
+                                        </div>
+
+                                        <div class="new-tag">{% trans "New!" %}</div>
+                                </div>
+
+                                <div class="products-content">
+                                        <span class="category">{{product.category}}</span>
+                                        <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+                                        <div class="star-rating">
+                                        <i class='bx bxs-star'></i>
+                                        {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                                        </div>
+                                        <div class="price">
+                                        <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                                        <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                                        </div>
+                                        {% comment %} <a href="#" class="add-to-cart">Add to Cart</a> {% endcomment %}
+                                </div>
+
+                                <span class="products-discount">
+                                {% if product.discount %}
+                                    <span>
+                                    {{product.discount|trans_number}}% {% trans "OFF" %}
+                                    </span>
+                                {% endif %}
+                                </span>
+                                </div>
+                        </div>
+                        {% endfor %}
+                </div>
+        </div>
+</section>
+<!-- End Products Area -->
+
+
+<!-- Start Products Area -->
+<section class="products-area pt-100 pb-70">
+        <div class="container">
+                <div class="section-title">
+                <span class="sub-title">{% trans 'See Our Collection' %}</span>
+                <h2>{% trans "Popular Products" %}</h2>
+                </div>
+
+                <div class="row">
+                {% for product in top_rating %}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-productsBox">
+                                <div class="products-image">
+                                        <a href="{{product.get_absolute_url}}">
+                                        <img src="{{product.images.first}}" class="main-image" alt="image">
+                                        <img src="{{product.images.last}}" class="hover-image" alt="image">
+                                        </a>
+
+                                        <div class="products-button">
+                                        <ul>
+                                                <li>
+                                                <div class="wishlist-btn">
+                                                        <a href="{% url "wishlist_add" product.pk %}">
+                                                        <i class='bx bx-heart'></i>
+                                                        <span class="tooltip-label">{% trans 'Add to Wishlist' %}</span>
+                                                        </a>
+                                                </div>
+                                                </li>
+                                                <li>
+                                                <div class="compare-btn">
+                                                        <a href="{% url "compare_add" product.pk %}">
+                                                        <i class='bx bx-refresh'></i>
+                                                        <span class="tooltip-label">{% trans "Compare" %}</span>
+                                                        </a>
+                                                </div>
+                                                </li>
+                                                <li>
+                                                <div class="quick-view-btn">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productsQuickViewTopRating-{{forloop.counter}}">
+                                                        <i class='bx bx-search-alt'></i>
+                                                        <span class="tooltip-label">{% trans 'Quick View' %}</span>
+                                                        </a>
+                                                </div>
+                                                </li>
+                                        </ul>
+                                        </div>
+
+                                        {% comment %} <div class="new-tag">New!</div> {% endcomment %}
+                                </div>
+
+                                <div class="products-content">
+                                        <span class="category">{{product.category}}</span>
+                                        <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+                                        <div class="star-rating">
+                                        <i class='bx bxs-star'></i>
+                                        {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                                        </div>
+                                        <div class="price">
+                                        <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                                        <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                                        </div>
+                                        {% comment %} <a href="#" class="add-to-cart">Add to Cart</a> {% endcomment %}
+                                </div>
+
+                                <span class="products-discount">
+                                    {% if product.discount %}
+                                        <span>
+                                        {{product.discount|trans_number}}% {% trans "OFF" %}
+                                        </span>
+                                    {% endif %}
+                                </span>
+                                </div>
+                        </div>
+                {% endfor %}
+                </div>
+        </div>
+</section>
+<!-- End Products Area -->
+
+
+<!-- Start QuickView Modal Area Newest -->
+{% for product in newest_products %}
+
+<div class="modal fade productsQuickView" id="productsQuickViewNewest-{{forloop.counter}}" tabindex="-1"       role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class='bx bx-x'></i></span>
+            </button>
+  
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="products-image">
+                        <img src="{{product.images.all.first}}" alt="image">
+                    </div>
+                </div>
+  
+                <div class="col-lg-6 col-md-6">
+                    <div class="products-content">
+                        <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+  
+                        <div class="price">
+                            <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                            <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                        </div>
+  
+                        <div class="products-review">
+                            <div class="rating">
+                                <i class='bx bxs-star'></i>
+                                {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                            </div>
+                            <a href="#" class="rating-count">{{product.reviews|trans_number}} {% trans "reviews" %}</a>
+                        </div>
+  
+                        <ul class="products-info">
+                            <li><span>{% trans 'Availability:' %}</span> <a href="#">{% trans "In stock" %} ({{product.inventory|trans_number}} {% trans "items" %})</a></li>
+                            <li><span>{% trans "Products Type:" %}</span> <a href="{% url "category_product_list" product.category %}">{{product.category}}</a></li>
+                        </ul>
+                        <form action="{% url "cart_add" product.pk %}" method="POST">
+                            {% csrf_token %}
+                          <div class="products-color-switch">
+                              <h4>{% trans 'Color:' %}</h4>
+                              <select style="width: 40%;" id="color" name="color" class="wide">
+                                {% for color in product.available_colors.all %}
+                                    <option name='color' value="{{color}}">{{color|trans_color}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+  
+                          <div class="products-size-wrapper">
+                            <span>{% trans "Size:" %}</span>
+  
+                            <select style="width: 40%;" id="size" name="size" class="wide">
+                                {% for size in product.sizes.all %}
+                                    <option name='size' value="{{size}}">{{size|trans_number}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+  
+                          <div class="products-add-to-cart">
+                              <div class="input-counter">
+                                  <span class="minus-btn"><i class='bx bx-minus'></i></span>
+                                  <input id="quantity" name="quantity" type="text" value="1">
+                                  <span class="plus-btn"><i class='bx bx-plus'></i></span>
+                              </div>
+  
+                              <button type="submit" class="default-btn">{% trans "Add to Cart" %}</button>
+                          </div>
+                        </form>
+  
+                        <a href="{{product.get_absolute_url}}" class="view-full-info">{% trans "View Full Info" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- End QuickView Modal Area Newest-->
+
+<!-- Start QuickView Modal Area Top Rating -->
+{% for product in top_rating %}
+<div class="modal fade productsQuickView" id="productsQuickViewTopRating-{{forloop.counter}}" tabindex="-1"        role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><i class='bx bx-x'></i></span>
+            </button>
+  
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="products-image">
+                        <img src="{{product.images.all.first}}" alt="image">
+                    </div>
+                </div>
+  
+                <div class="col-lg-6 col-md-6">
+                    <div class="products-content">
+                        <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+  
+                        <div class="price">
+                            <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                            <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                        </div>
+  
+                        <div class="products-review">
+                            <div class="rating">
+                                <i class='bx bxs-star'></i>
+                                {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                            </div>
+                            <a href="#" class="rating-count">{{product.reviews|trans_number}} {% trans "reviews" %}</a>
+                        </div>
+  
+                        <ul class="products-info">
+                            <li><span>{% trans 'Availability:' %}</span> <a href="#">{% trans "In stock" %} ({{product.inventory}} {% trans "items" %})</a></li>
+                            <li><span>{% trans "Products Type:" %}</span> <a href="{% url "category_product_list" product.category %}">{{product.category}}</a></li>
+                        </ul>
+                        <form action="{% url "cart_add" product.pk %}" method="POST">
+                            {% csrf_token %}
+                          <div class="products-color-switch">
+                              <h4>{% trans 'Color:' %}</h4>
+                              <select style="width: 40%;" id="color" name="color" class="wide">
+                                {% for color in product.available_colors.all %}
+                                    <option name='color' value="{{color}}">{{color|trans_color}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+  
+                          <div class="products-size-wrapper">
+                            <span>{% trans "Size:" %}</span>
+  
+                            <select style="width: 40%;" id="size" name="size" class="wide">
+                                {% for size in product.sizes.all %}
+                                    <option name='size' value="{{size}}">{{size|trans_number}}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+  
+                          <div class="products-add-to-cart">
+                              <div class="input-counter">
+                                  <span class="minus-btn"><i class='bx bx-minus'></i></span>
+                                  <input id="quantity" name="quantity" type="text" value="1">
+                                  <span class="plus-btn"><i class='bx bx-plus'></i></span>
+                              </div>
+  
+                              <button type="submit" class="default-btn">{% trans "Add to Cart" %}</button>
+                          </div>
+                        </form>
+  
+                        <a href="{{product.get_absolute_url}}" class="view-full-info">{% trans "View Full Info" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- End QuickView Modal Area Top Rating-->
+
+
+
+
+
+{% endblock content %}
+

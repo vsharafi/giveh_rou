@@ -1,0 +1,780 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load persian_translation_tags %}
+{% load myapp_extras %}
+{% load cat_filter %}
+
+{% block css %}
+
+<link rel="stylesheet" href="{% static "assets/css/price_slider.css" %}">
+{% endblock css %}
+{% block page_title %}{% trans "Shop" %}{% endblock page_title %}
+
+{% block content %}
+<style>
+  /* Import Google Font - Poppins */
+  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+  .d-flex {
+    display: flex !important;
+  }
+
+  ::selection {
+    color: #fff;
+    background: #336367;
+  }
+  .wrapper {
+    width: 400px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px 25px 40px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+  }
+  header h2 {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  header p {
+    margin-top: 5px;
+    font-size: 16px;
+  }
+  .price-input {
+    width: 100%;
+    display: flex;
+    margin: 30px 0 35px;
+  }
+  .price-input .field {
+    display: flex;
+    width: 100%;
+    height: 45px;
+    align-items: center;
+  }
+  .field input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 15px;
+    margin-left: 12px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #999;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  .price-input .separator {
+    width: 130px;
+    display: flex;
+    font-size: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+  .slider {
+    height: 5px;
+    position: relative;
+    background: #ddd;
+    border-radius: 5px;
+  }
+  .slider .progress {
+    height: 100%;
+    left: 25%;
+    right: 25%;
+    position: absolute;
+    border-radius: 5px;
+    background: #336367;
+  }
+  .range-input {
+    position: relative;
+  }
+  .range-input input {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    top: -5px;
+    background: none;
+    pointer-events: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #336367;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  }
+  input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background: #336367;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Support */
+  .support-box {
+    top: 2rem;
+    position: relative;
+    bottom: 0;
+    text-align: center;
+    display: block;
+  }
+  .b-btn {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .b-btn.paypal i {
+    color: blue;
+  }
+  .b-btn:hover {
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .b-btn i {
+    font-size: 20px;
+    color: yellow;
+    margin-top: 2rem;
+  }
+
+
+</style>
+<!-- Start Page Title -->
+<div class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>{% trans "Shop" %}</h2>
+            <ul>
+                <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                <li>{% trans "Shop" %}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Start Products Area -->
+<form action="" method="get">
+<section class="products-area products-collections-area pt-100 pb-70">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <div class="woocommerce-widget-area">
+
+                    <div class="woocommerce-widget collections-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Collections" %}</h3>
+
+                        <ul class="collections-list-row">
+                            {% for c in categories %}
+                            <li>
+                                <label style="font:bold; cursor: pointer; width: 100%;">
+                                    <input type="checkbox" name="category" value="{{c}}">
+                                    {{c}}
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                              {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="woocommerce-widget price-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Price" %}</h3>
+
+                        <div dir="ltr" class="d-flex">
+                            <div class="wrapper">
+
+                              <div class="price-input">
+                                <div class="field">
+                                  <span>{% trans "Min" %}</span>
+                                  <input type="number" name='price_min' class="input-min" value="250000">
+                                </div>
+                                <div class="separator">-</div>
+                                <div class="field">
+                                  <span>{% trans "Max" %}</span>
+                                  <input type="number" name="price_max" class="input-max" value="750000">
+                                </div>
+                              </div>
+                              <div class="slider">
+                                <div class="progress"></div>
+                              </div>
+                              <div class="range-input">
+                                <input type="range" class="range-min" min="0" max="1000000" value="250000" step="100">
+                                <input type="range" class="range-max" min="0" max="1000000" value="750000" step="100">
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="woocommerce-widget size-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Size" %}</h3>
+
+                        <ul class="size-list-row">
+                            {% for size in sizes %}
+                            <li>
+                                <label class="container_check">{{size|trans_number}}
+                                    <input name='size' value={{size}} type="checkbox">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="woocommerce-widget size-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Color" %}</h3>
+
+                        <ul class="size-list-row">
+                            {% for color in colors %}
+                            <li>
+                                <label class="container_check">{{color|trans_color}}
+                                    <input name='color' value={{color}} type="checkbox">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <hr>
+                    <div class="woocommerce-widget size-list-widget">
+                        
+                        <button class="optional-btn" type="submit">{% trans "Reset" %}</button>
+                        <button class="default-btn" type="submit">{% trans "Filter" %}</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-12">
+                <div class="products-filter-options">
+                    <div class="row align-items-center">
+                        <div class="col-lg-4 col-md-4">
+                            <div class="d-lg-flex d-md-flex align-items-center">
+                                <span class="sub-title d-lg-none"><a href="#" data-bs-toggle="modal" data-bs-target="#productsFilterModal"><i class='bx bx-filter-alt'></i>{% trans " Filter" %}</a></span>
+                                
+                                <span class="sub-title d-none d-lg-block d-md-block">{% trans "View:" %}</span>
+
+                                <div class="view-list-row d-none d-lg-block d-md-block">
+                                    <div class="view-column">
+                                        <a href="#" class="icon-view-two">
+                                            <span></span>
+                                            <span></span>
+                                        </a>
+
+                                        <a href="#" class="icon-view-three active">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </a>
+
+                                        <a href="#" class="icon-view-four">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </a>
+
+                                        <a href="#" class="view-grid-switch">
+                                            <span></span>
+                                            <span></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4">
+                            <div class="products-ordering-list">
+                              <select name="sort" id="sort">
+                                <option value="rating">{% trans "Sort by average rating" %}</option>
+                                <option value="date">{% trans "Sort by newness" %}</option>
+                                <option value="price">{% trans "Sort by price: low to high" %}</option>
+                                <option value="price-desc">{% trans "Sort by price: high to low" %}</option>
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="products-collections-filter" class="row">
+                    {% for product in object_list %}
+                    <div class="col-lg-4 col-md-6 col-sm-6 products-col-item">
+                        <div class="products-box">
+                            <div class="products-image">
+                                <a href="{{product.get_absolute_url}}">
+                                    <img src="{{product.images.first}}" class="main-image" alt="image">
+                                    <img src="{{product.images.last}}" class="hover-image" alt="image">
+                                </a>
+
+                                <div class="products-button">
+                                    <ul>
+                                        <li>
+                                            <div class="wishlist-btn">
+                                                <a href="{% url "wishlist_add" product.pk %}">
+                                                    <i class='bx bx-heart'></i>
+                                                    <span class="tooltip-label">{% trans "Add to Wishlist" %}</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="compare-btn">
+                                                <a href="{% url "compare_add" product.pk %}">
+                                                    <i class='bx bx-refresh'></i>
+                                                    <span class="tooltip-label">{% trans "Compare" %}</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="quick-view-btn">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#productsQuickView-{{forloop.counter}}">
+                                                    <i class='bx bx-search-alt'></i>
+                                                    <span class="tooltip-label">{% trans "Quick View" %}</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                {% comment %} <div class="new-tag">{% trans "New!" %}</div> {% endcomment %}
+                            </div>
+
+                            <div class="products-content">
+                                <span class="category">{{product.category}}</span>
+                                <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+                                <div class="star-rating">
+                                    <i class='bx bxs-star'></i>
+                                    {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                                </div>
+                                <div class="price">
+                                    <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                                    <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                                </div>
+                                {% comment %} <a href="#" class="add-to-cart">{% trans "Add to Cart" %}</a> {% endcomment %}
+                            </div>
+
+                            <span class="products-discount">
+                              {% if product.discount %}
+                                <span>
+                                  {{product.discount|trans_number}}% {% trans "OFF" %}
+                                </span>
+                              {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="pagination-area text-center">
+                    {% if is_paginated %}
+                    {% if paginator.num_pages < 5 %}
+                        {% for number in paginator.page_range %}
+                            {% if number == page_obj.number %}
+                                <a class="current" href="{% my_url  number 'page' request.GET.urlencode %}">{{ number }}</a>
+                            {% else %}
+                                <a class='page-numbers' href="{% my_url  number 'page' request.GET.urlencode %}">{{ number }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% if page_obj.number|add:"2" in paginator.page_range and page_obj.number|add:"-2" in paginator.page_range %}
+                            {# o o x o o #}
+                            <a class="prev page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">&#10094;</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number|add:"-1" 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number|add:"-1" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number }}</a>
+                            <a class="current page-numbers" href="{% my_url  page_obj.number 'page' request.GET.urlencode %}">{{ page_obj.number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">{{ page_obj.next_page_number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number|add:"1" 'page' request.GET.urlencode %}">{{ page_obj.next_page_number|add:"1" }}</a>
+                            <a class="next page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">&#10095;</a>
+                        {% endif %}
+                        {% if not page_obj.number|add:"2" in paginator.page_range and page_obj.has_next %}
+                            {# o o o x o #}
+                            <a class="prev page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">&#10094;</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number|add:"-2" 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number|add:"-2" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number|add:"-1" 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number|add:"-1" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number }}</a>
+                            <a class="current page-numbers" href="{% my_url  page_obj.number 'page' request.GET.urlencode %}">{{ page_obj.number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">{{ page_obj.next_page_number }}</a>
+                            <a class="next page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">&#10095;</a>
+                        {% endif %}
+                        {% if not page_obj.number|add:"-2" in paginator.page_range and page_obj.has_next and page_obj.has_previous %}
+                            {# o x o o o #}
+                            <a class="prev page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}" >&#10094;</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number }}</a>
+                            <a class="current page-numbers" href="{% my_url  page_obj.number 'page' request.GET.urlencode %}">{{ page_obj.number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">{{ page_obj.next_page_number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number|add:"1" 'page' request.GET.urlencode %}">{{ page_obj.next_page_number|add:"1" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number|add:"2" 'page' request.GET.urlencode %}">{{ page_obj.next_page_number|add:"2" }}</a>
+                            <a class="next page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">&#10095;</a>
+                        {% endif %}
+                        {% if not page_obj.has_previous %}
+                            {# x o o o o #}
+                            <a class="current page-numbers" href="{% my_url  page_obj.number 'page' request.GET.urlencode %}">{{ page_obj.number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">{{ page_obj.next_page_number }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number|add:"1" 'page' request.GET.urlencode %}">{{ page_obj.next_page_number|add:"1" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number|add:"2" 'page' request.GET.urlencode %}">{{ page_obj.next_page_number|add:"2" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.next_page_number|add:"3" 'page' request.GET.urlencode %}">{{ page_obj.next_page_number|add:"3" }}</a>
+                            <a class="next page-numbers" href="{% my_url  page_obj.next_page_number 'page' request.GET.urlencode %}">&#10095;</a>
+                        {% endif %}
+                        {% if not page_obj.has_next %}
+                            {# o o o o x #}
+                            <a class="prev page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">&#10094;</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number|add:"-3" 'page' request.GET.urlencode %}}">{{ page_obj.previous_page_number|add:"-3"  }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number|add:"-2" 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number|add:"-2" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number|add:"-1" 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number|add:"-1" }}</a>
+                            <a class="page-numbers" href="{% my_url  page_obj.previous_page_number 'page' request.GET.urlencode %}">{{ page_obj.previous_page_number }}</a>
+                            <a class="current page-numbers" href="{% my_url  page_obj.number 'page' request.GET.urlencode %}">{{ page_obj.number }}</a>
+                        {% endif %}
+                    {% endif %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</form>
+<!-- End Products Area -->
+
+<!-- Start Products Filter Modal Area -->
+<form action="" method="get">
+<div class="modal left fade productsFilterModal" id="productsFilterModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"><i class='bx bx-x'></i> Close</span>
+          </button>
+
+          <div class="modal-body">
+              <div class="woocommerce-widget-area">
+                    
+                
+                    <div class="woocommerce-widget collections-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Sort By:" %}</h3>
+
+                        <select name="sort" id="sort">
+                            <option value="rating">{% trans "Sort by average rating" %}</option>
+                            <option value="date">{% trans "Sort by newness" %}</option>
+                            <option value="price">{% trans "Sort by price: low to high" %}</option>
+                            <option value="price-desc">{% trans "Sort by price: high to low" %}</option>
+                          </select>
+                    </div>
+                    
+                    <div class="woocommerce-widget collections-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Collections" %}</h3>
+
+                        <ul class="collections-list-row">
+                            {% for c in categories %}
+                            <li>
+                                <label style="font:bold; cursor: pointer; width: 100%;">
+                                    <input type="checkbox" name="category" value="{{c}}">
+                                    {{c}}
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                              {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="woocommerce-widget price-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Price" %}</h3>
+  
+                        <div dir='ltr' class="collection-filter-by-price">
+                            <input class="js-range-of-price" type="text" data-min="250000" data-max="750000" name="filter_by_price" data-step="1000">
+                        </div>
+                    </div>
+
+                    <div class="woocommerce-widget size-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Size" %}</h3>
+
+                        <ul class="size-list-row">
+                            {% for size in sizes %}
+                            <li>
+                                <label class="container_check">{{size|trans_number}}
+                                    <input name='size' value={{size}} type="checkbox">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="woocommerce-widget size-list-widget">
+                        <h3 class="woocommerce-widget-title">{% trans "Color" %}</h3>
+
+                        <ul class="size-list-row">
+                            {% for color in colors %}
+                            <li>
+                                <label class="container_check">{{color|trans_color}}
+                                    <input name='color' value={{color}} type="checkbox">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <hr>
+                    <div class="woocommerce-widget size-list-widget">
+                        
+                        <button class="optional-btn" type="submit">{% trans "Reset" %}</button>
+                        <button class="default-btn" type="submit">{% trans "Filter" %}</button>
+                    </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+</form>
+<!-- End Products Filter Modal Area -->
+
+
+
+
+<!-- Start QuickView Modal Area -->
+{% for product in object_list %}
+<div class="modal fade productsQuickView" id="productsQuickView-{{forloop.counter}}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"><i class='bx bx-x'></i></span>
+          </button>
+
+          <div class="row align-items-center">
+              <div class="col-lg-6 col-md-6">
+                  <div class="products-image">
+                      <img src="{{product.images.all.first}}" alt="image">
+                  </div>
+              </div>
+
+              <div class="col-lg-6 col-md-6">
+                  <div class="products-content">
+                      <h3><a href="{{product.get_absolute_url}}">{{product.name}}</a></h3>
+
+                      <div class="price">
+                        <span class="old-price"> {% if product.discount %}{{product.price|intcomma:False|trans_number}} {% endif %}</span>
+                        <span class="new-price"> {% if product.discount %}{{product.new_price|intcomma:False|trans_number}}{% else %}{{product.price|intcomma:False|trans_number}}{% endif %} {% trans "$" %}</span>
+                      </div>
+
+                      <div class="products-review">
+                          <div class="rating">
+                              <i class='bx bxs-star'></i>
+                              {% if not product.rating == None %}{{product.rating|trans_number}}{% endif %}
+                          </div>
+                          <a href="#" class="rating-count">{{product.reviews|trans_number}} {% trans "reviews" %}</a>
+                      </div>
+
+                      <ul class="products-info">
+                          <li><span>{% trans "Availability:" %}</span> <a href="#">{% trans "In stock" %} ({{product.inventory|trans_number}} {% trans "items" %})</a></li>
+                          <li><span>{% trans "Products Type:" %}</span> <a href="{% url "category_product_list" product.category %}">{{product.category}}</a></li>
+                      </ul>
+                      <form action="{% url "cart_add" product.pk %}" method="POST">
+                          {% csrf_token %}
+                        <div class="products-color-switch">
+                            <h4>{% trans "Color:" %}</h4>
+                            <select style="width: 40%;" id="color" name="color" class="wide">
+                              {% for color in product.available_colors.all %}
+                                  <option name='color' value="{{color}}">{{color|trans_color}}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+
+                        <div class="products-size-wrapper">
+                          <span>{% trans "Size:" %}</span>
+
+                          <select style="width: 40%;" id="size" name="size" class="wide">
+                              {% for size in product.sizes.all %}
+                                  <option name='size' value="{{size}}">{{size|trans_number}}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+
+                        <div class="products-add-to-cart">
+                            <div class="input-counter">
+                                <span class="minus-btn"><i class='bx bx-minus'></i></span>
+                                <input id="quantity" name="quantity" type="text" value="1">
+                                <span class="plus-btn"><i class='bx bx-plus'></i></span>
+                            </div>
+
+                            <button type="submit" class="default-btn">{% trans "Add to Cart" %}</button>
+                        </div>
+                      </form>
+
+                      <a href="{{product.get_absolute_url}}" class="view-full-info">{% trans "View Full Info" %}</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endfor %}
+<!-- End QuickView Modal Area -->
+
+
+<!-- Start Products Filter Modal Area -->
+<div class="modal left fade productsFilterModal" id="productsFilterModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true"><i class='bx bx-x'></i> Close</span>
+          </button>
+
+          <div class="modal-body">
+              <div class="woocommerce-widget-area">
+                  <div class="woocommerce-widget filter-list-widget">
+                      <h3 class="woocommerce-widget-title">Current Selection</h3>
+
+                      <div class="selected-filters-wrap-list">
+                          <ul>
+                              <li><a href="#"><i class='bx bx-x'></i> 44</a></li>
+                              <li><a href="#"><i class='bx bx-x'></i> XI</a></li>
+                              <li><a href="#"><i class='bx bx-x'></i> Clothing</a></li>
+                              <li><a href="#"><i class='bx bx-x'></i> Shoes</a></li>
+                          </ul>
+
+                          <a href="#" class="delete-selected-filters"><i class='bx bx-trash'></i> <span>Clear All</span></a>
+                      </div>
+                  </div>
+
+                  <div class="woocommerce-widget collections-list-widget">
+                      <h3 class="woocommerce-widget-title">Collections</h3>
+
+                      <ul class="collections-list-row">
+                          <li><a href="#">Men's</a></li>
+                          <li class="active"><a href="#" class="active">Women’s</a></li>
+                          <li><a href="#">Clothing</a></li>
+                          <li><a href="#">Shoes</a></li>
+                          <li><a href="#">Accessories</a></li>
+                          <li><a href="#">Uncategorized</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="woocommerce-widget price-list-widget">
+                      <h3 class="woocommerce-widget-title">Price</h3>
+
+                      <div class="collection-filter-by-price">
+                          <input class="js-range-of-price" type="text" data-min="0" data-max="1055" name="filter_by_price" data-step="10">
+                      </div>
+                  </div>
+
+                  <div class="woocommerce-widget size-list-widget">
+                      <h3 class="woocommerce-widget-title">Size</h3>
+
+                      <ul class="size-list-row">
+                          <li><a href="#">20</a></li>
+                          <li><a href="#">24</a></li>
+                          <li class="active"><a href="#">36</a></li>
+                          <li><a href="#">30</a></li>
+                          <li><a href="#">XS</a></li>
+                          <li><a href="#">S</a></li>
+                          <li><a href="#">M</a></li>
+                          <li><a href="#">L</a></li>
+                          <li><a href="#">L</a></li>
+                          <li><a href="#">XL</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="woocommerce-widget color-list-widget">
+                      <h3 class="woocommerce-widget-title">Color</h3>
+
+                      <ul class="color-list-row">
+                          <li class="active"><a href="#" title="Black" class="color-black"></a></li>
+                          <li><a href="#" title="Red" class="color-red"></a></li>
+                          <li><a href="#" title="Yellow" class="color-yellow"></a></li>
+                          <li><a href="#" title="White" class="color-white"></a></li>
+                          <li><a href="#" title="Blue" class="color-blue"></a></li>
+                          <li><a href="#" title="Green" class="color-green"></a></li>
+                          <li><a href="#" title="Yellow Green" class="color-yellowgreen"></a></li>
+                          <li><a href="#" title="Pink" class="color-pink"></a></li>
+                          <li><a href="#" title="Violet" class="color-violet"></a></li>
+                          <li><a href="#" title="Blue Violet" class="color-blueviolet"></a></li>
+                          <li><a href="#" title="Lime" class="color-lime"></a></li>
+                          <li><a href="#" title="Plum" class="color-plum"></a></li>
+                          <li><a href="#" title="Teal" class="color-teal"></a></li>
+                      </ul>
+                  </div>
+
+                  <div class="woocommerce-widget brands-list-widget">
+                      <h3 class="woocommerce-widget-title">Brands</h3>
+
+                      <ul class="brands-list-row">
+                          <li><a href="#">Gucci</a></li>
+                          <li><a href="#">Virgil Abloh</a></li>
+                          <li><a href="#">Balenciaga</a></li>
+                          <li class="active"><a href="#">Moncler</a></li>
+                          <li><a href="#">Fendi</a></li>
+                          <li><a href="#">Versace</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="woocommerce-widget aside-trending-widget">
+                      <div class="aside-trending-products">
+                          <img src="assets/img/offer-bg.jpg" alt="image">
+
+                          <div class="category">
+                              <h3>Top Trending</h3>
+                              <span>Spring/Summer 2021 Collection</span>
+                          </div>
+                          <a href="#" class="link-btn"></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- End Products Filter Modal Area -->
+
+
+
+<script>
+    const rangeInput = document.querySelectorAll(".range-input input"),
+  priceInput = document.querySelectorAll(".price-input input"),
+  range = document.querySelector(".slider .progress");
+let priceGap = 1000;
+
+priceInput.forEach((input) => {
+  input.addEventListener("input", (e) => {
+    let minPrice = parseInt(priceInput[0].value),
+      maxPrice = parseInt(priceInput[1].value);
+
+    if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInput[1].max) {
+      if (e.target.className === "input-min") {
+        rangeInput[0].value = minPrice;
+        range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
+      } else {
+        rangeInput[1].value = maxPrice;
+        range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+      }
+    }
+  });
+});
+
+rangeInput.forEach((input) => {
+  input.addEventListener("input", (e) => {
+    let minVal = parseInt(rangeInput[0].value),
+      maxVal = parseInt(rangeInput[1].value);
+
+    if (maxVal - minVal < priceGap) {
+      if (e.target.className === "range-min") {
+        rangeInput[0].value = maxVal - priceGap;
+      } else {
+        rangeInput[1].value = minVal + priceGap;
+      }
+    } else {
+      priceInput[0].value = minVal;
+      priceInput[1].value = maxVal;
+      range.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+      range.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+    }
+  });
+});
+
+</script>
+{% endblock content %}

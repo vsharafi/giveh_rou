@@ -1,0 +1,87 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load socialaccount %}
+
+<link   rel="stylesheet" 
+href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+crossorigin="anonymous">
+{% block page_title %}{% trans "Login" %}{% endblock page_title %}
+
+
+{% block content %}
+        <!-- Start Page Title -->
+        <div class="page-title-area">
+            <div class="container">
+                <div class="page-title-content">
+                    <h2>{% trans "My Account" %}</h2>
+                    <ul>
+                        <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                        <li>{% trans "Login" %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Page Title -->
+
+        <!-- Start Login Area -->
+        <section class="login-area ptb-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="login-content">
+                            <h2>{% trans "Login" %}</h2>
+
+                            <form class="login-form" method="post">
+								{% csrf_token %}
+								{{ form.non_field_errors | safe }}
+                                <div class="form-group">
+                                    <label for="ursername">{% trans "Username" %}</label>
+									{% render_field form.login type="text" class="form-control" name="username" id="username" placeholder="نام کاربری*" %}
+									{{ form.login.errors | safe }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password_in">{% trans "Password" %}</label>
+									{% render_field form.password type="password" class="form-control" name="password_in" id="password_in" value="" placeholder="رمز عبور*" %}
+                                {{ form.password.errors | safe }}
+                                </div>
+
+                                <button type="submit" class="default-btn">{% trans "Login" %}</button>
+
+                                <a href="{% url "account_reset_password" %}" class="forgot-password">{% trans "Lost your password?" %}</a>
+                            </form>
+							<div class="dropdown-divider"><span>Or</span></div>
+                            <br>
+							<div class="row">
+								<div class="col-md-6" style="margin: auto;">
+								  <a class="btn btn-outline-dark" href="{% provider_login_url "google" %}" role="button" style="text-transform:none;">
+									<img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="{% static "assets\css\icons\Google__G__logo.svg" %}" />
+									{% trans "Login with Google" %}
+								  </a>
+								</div>
+							  </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6">
+                        <div class="new-customer-content">
+                            <h2>{% trans "New Customer" %}</h2>
+
+                            <span>{% trans "Create A Account" %}</span>
+                            <p>{% trans "Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register." %}</p>
+                            <a href="{% url "account_signup" %}?next={{ request.get_full_path|urlencode }}" class="optional-btn">{% trans "Create A Account" %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Login Area -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+		crossorigin="anonymous">
+</script>
+{% endblock content %}

@@ -1,0 +1,162 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load persian_translation_tags %}
+{% load widget_tweaks %}
+
+{% block page_title %}{% trans "Checkout" %}{% endblock page_title %}
+
+{% block content %}
+<!-- Start Page Title -->
+<div class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h2>{% trans "Checkout" %}</h2>
+            <ul>
+                <li><a href="{% url "home" %}">{% trans "Home" %}</a></li>
+                <li>{% trans "Checkout" %}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Page Title -->
+
+<!-- Start Checkout Area -->
+<section class="checkout-area ptb-100">
+    <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="billing-details">
+                        <h3 class="title">{% trans 'Billing Details' %}</h3>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label for="first_name">{% trans 'First Name' %} <span class="required">*</span></label>
+                                    {{form.first_name}}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label for="last_name">{% trans 'Last Name' %} <span class="required">*</span></label>
+                                    {{form.last_name}}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label for="phone_number">{% trans 'Phone Number' %} <span class="required">*</span></label>
+                                    <div class="form-group">
+                                        {{form.phone_number}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="address">{% trans 'Address' %} <span class="required">*</span></label>
+                                    {{form.address}}
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    {{form.order_note}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12">
+                    <div class="order-details">
+                        <h3 class="title">{% trans 'Your Order' %}</h3>
+
+                        <div class="order-table table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">{% trans "Product Details" %}</th>
+                                        <th scope="col">{% trans "Total" %}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for item in cart %}
+                                    <tr>
+                                        <td class="product-name">
+                                            {{item.quantity|trans_number}} x <a href="{% url "product_detail" item.product_obj.pk %}"> {{item.product_obj}}</a> / {{item.color|trans_color}} / {{item.size|trans_number}}
+                                        </td>
+                                    
+                                        <td class="product-total">
+                                            <span class="subtotal-amount">{{item.total_price|intcomma:False|trans_number}} {% trans "$" %}</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+
+                                    <tr>
+                                        <td class="order-subtotal">
+                                            <span>{% trans "Products total price" %}</span>
+                                        </td>
+
+                                        <td class="order-subtotal-price">
+                                            <span class="order-subtotal-amount">{{cart.get_total_price|intcomma:False|trans_number}} {% trans "$" %}</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="order-shipping">
+                                            <span>{% trans "Total Discount" %}</span>
+                                        </td>
+
+                                        <td class="shipping-price">
+                                            <span>{{cart.total_discout_amount|intcomma:False|trans_number}} {% trans "$" %}</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="total-price">
+                                            <span>{% trans "Order Total" %}</span>
+                                        </td>
+
+                                        <td class="product-subtotal">
+                                            <span class="subtotal-amount">{{cart.get_new_total_price|intcomma:False|trans_number}} {% trans "$" %}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="payment-box">
+                            {% comment %} <div class="payment-method">
+                                <p>
+                                    <input type="radio" id="direct-bank-transfer" name="radio-group" checked>
+                                    <label for="direct-bank-transfer">Direct Bank Transfer</label>
+                                    Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                </p>
+                                <p>
+                                    <input type="radio" id="paypal" name="radio-group">
+                                    <label for="paypal">PayPal</label>
+                                </p>
+                                <p>
+                                    <input type="radio" id="cash-on-delivery" name="radio-group">
+                                    <label for="cash-on-delivery">Cash on Delivery</label>
+                                </p>
+                            </div> {% endcomment %}
+
+                            {% comment %} <a href="#" class="default-btn">Place Order</a> {% endcomment %}
+                            <button type="submit" class="default-btn">{% trans "Place Order" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- End Checkout Area -->
+{% endblock content %}
